@@ -8,6 +8,13 @@ https://forum.pjrc.com/threads/57173-Teensy-4-0-code-security
 
 ## Initial Setup
 
+Update the linker scripts in {Arduino}/hardware/teensy/avr/cores/teensy4
+
+You must have RAM size reduced to 504K and begin at 0x20202000, so DMAMEM
+does not overwrite the HAB logfile.  See this linker script for an example:
+
+https://github.com/PaulStoffregen/cores/blob/master/teensy4/imxrt1062.ld
+
 Download CST 3.3.0 or 3.3.1 from NXP's website.  Registration is required, but
 they do not require a non-disclosure agreement to download CST.
 
