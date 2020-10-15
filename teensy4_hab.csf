@@ -1,0 +1,30 @@
+[Header]
+	Version = 4.3
+
+[Install SRK]
+	File = "cst/keys/SRK_table.bin"
+	Source Index = 0
+	Hash Algorithm = sha256
+
+[Install NOCAK]
+	File = "cst/crts/SRK1_sha256_2048_65537_v3_usr_crt.pem"
+
+[Authenticate CSF]
+
+[Authenticate Data]
+	Verification Index = 0
+	#Blocks = 0x60001000 4096 32768 "teensy4_hab.ino.bin"
+	#Blocks = 0x60001000 4096 8192 "teensy4_hab.ino.bin"
+	
+
+#[Unlock]
+#	Engine = OCOTP
+#	Features = JTAG
+#	#UID is fuses 0x410 & 0x420 (HW_OCOTP_CFG0, HW_OCOTP_CFG1)
+#	#UID = 0x01, 0x23, 0x45, 0x67, 0x89, 0xab, 0xcd, 0xef
+
+
+# key blob info on security manual, page 429 - blog creation only in secure mode
+
+
+
