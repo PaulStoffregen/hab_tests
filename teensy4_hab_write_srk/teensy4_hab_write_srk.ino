@@ -1,3 +1,7 @@
+// WARNING: This will permanently burn the 256 bit SRK hash into
+// your Teensy 4's fuse memory.  This WRITE IS PERMANENT.  There
+// is no way to erase the fuses.  If you write the wrong data,
+// the only way to try again is with another Teensy!
 
 void setup() {
   while (!Serial) ;
@@ -6,6 +10,8 @@ void setup() {
     HW_OCOTP_SRK0, HW_OCOTP_SRK1, HW_OCOTP_SRK2, HW_OCOTP_SRK3,
     HW_OCOTP_SRK4, HW_OCOTP_SRK5, HW_OCOTP_SRK6, HW_OCOTP_SRK7);
 
+// These lines are genated with "./srkfuse cst/keys/SRK_fuse.bin".
+// Hopefully I got the bit/byte/word order correct??
 fuse_write(&HW_OCOTP_SRK0, 0x357F286C);
 fuse_write(&HW_OCOTP_SRK1, 0x9D03F0B5);
 fuse_write(&HW_OCOTP_SRK2, 0x0FD17D0B);
