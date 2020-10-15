@@ -1,4 +1,4 @@
-#Testing HAB on Teensy 4.0
+# Testing HAB on Teensy 4.0
 
 High Assurange Boot (HAB) is not yet supported on Teensy 4.x.  This repository
 is a collection of experiments to hopefully get it working.  Discussion is on
@@ -6,7 +6,7 @@ this forum thread.
 
 https://forum.pjrc.com/threads/57173-Teensy-4-0-code-security
 
-##Initial Setup
+## Initial Setup
 
 Download CST 3.3.0 or 3.3.1 from NXP's website.  Registration is required, but
 they do not require a non-disclosure agreement to download CST.
@@ -38,7 +38,7 @@ Run "make" to build hex2bin, bin2hex, srkfuse
 Run the teensy4_hab_write_srk.ino sketch on your Teensy 4.0 or 4.1 to write the
 SRK key's hash into fuse memory.
 
-##Usage
+## Usage
 
 Compile the teensy4_hab_logfile sketch
 
