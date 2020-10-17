@@ -1,20 +1,15 @@
 [Header]
-	Version = 4.3
-
+	Version = 4.1
 [Install SRK]
-	File = "cst/keys/SRK_table.bin"
+	File = "../crts/SRK_table.bin"
 	Source Index = 0
-	Hash Algorithm = sha256
-
 [Install NOCAK]
-	File = "cst/crts/SRK1_sha256_2048_65537_v3_usr_crt.pem"
-
+	File = "../crts/SRK1_sha256_2048_65537_v3_usr_crt.pem"
 [Authenticate CSF]
-
+	Signature Format = CMS
 [Authenticate Data]
 	Verification Index = 0
-	#Blocks = 0x60001000 4096 32768 "teensy4_hab.ino.bin"
-	#Blocks = 0x60001000 4096 8192 "teensy4_hab.ino.bin"
+	Blocks = 0x60001000 0x00001000 0x0000A000 "image.bin"
 	
 
 #[Unlock]
