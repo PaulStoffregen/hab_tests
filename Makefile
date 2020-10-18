@@ -1,7 +1,10 @@
 CC = gcc
 CFLAGS = -O2 -Wall
 
-all: hex2bin bin2hex srkfuse
+all: hex2bin bin2hex srkfuse hex2csf
+
+hex2csf: hex2csf.c ihex.o
+	gcc $(CFLAGS) -o hex2csf hex2csf.c ihex.o
 
 hex2bin: hex2bin.c ihex.o
 	gcc $(CFLAGS) -o hex2bin hex2bin.c ihex.o

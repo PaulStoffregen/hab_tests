@@ -203,6 +203,11 @@ unsigned char memory_byte(int addr)
 	return firmware_data[addr];
 }
 
+unsigned int memory_word(int addr)
+{
+	return memory_byte(addr) | (memory_byte(addr+1) << 8) |
+		(memory_byte(addr+2) << 16) | (memory_byte(addr+3) << 24);
+}
 
 void memory_write(int addr, unsigned char byte)
 {

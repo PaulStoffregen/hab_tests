@@ -8,6 +8,7 @@ int ihex_get_size(unsigned int addr, int len);
 int memory_is_blank(int addr, int block_size);
 int memory_is_undefined(int addr);
 unsigned char memory_byte(int addr);
+unsigned int memory_word(int addr);
 void memory_write(int addr, unsigned char byte);
 
 
