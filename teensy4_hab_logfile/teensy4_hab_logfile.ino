@@ -22,6 +22,7 @@ uint32_t big_endian32(const uint8_t *p)
 	return (p[0] << 24) | (p[1] << 16) |  (p[2] << 8) | p[3];
 }
 
+
 void setup()
 {
 	while (!Serial) ; // wait for serial monitor
@@ -32,7 +33,15 @@ void setup()
 	Serial.printf("SRK Hash:  %08X %08X %08X %08X %08X %08X %08X %08X\n",
 		HW_OCOTP_SRK0, HW_OCOTP_SRK1, HW_OCOTP_SRK2, HW_OCOTP_SRK3,
 		HW_OCOTP_SRK4, HW_OCOTP_SRK5, HW_OCOTP_SRK6, HW_OCOTP_SRK7);
-    
+	const uint32_t lockbits = HW_OCOTP_LOCK;
+	Serial.printf("Fuse Lock: %08X\n", lockbits);
+	print_lock_3way("Boot Config", lockbits >> 2);
+	print_lock_2way("Misc Config", lockbits >> 22);
+	print_lock_3way("Mac Address", lockbits >> 8);
+	print_lock_3way("GP1", lockbits >> 10);
+	print_lock_3way("GP2", lockbits >> 12);
+	print_lock_3way("GP3", lockbits >> 26);
+	print_lock_2way("SW_GP1", lockbits >> 24);
 	const uint32_t *ivt = (uint32_t *)0x60001000;
 	Serial.println("Image Vector Table: (ref manual rev 2: 9.7.1.1, page 261)");
 	Serial.printf("  Header   %08X\n  Vector   %08X\n  reserved %08X\n  DCD      %08X\n",
@@ -56,11 +65,11 @@ void setup()
 	} else {
 		Serial.println("  ERROR: DCD not an address in flash memory!");
 	}
-	Serial.println("CSF: (is this data format documented anywhere??)");
+	Serial.println("CSF: (cst/docs/HAB4_API.pdf: 4.3, pages 23-42)");
 	if (ivt[6] == 0) {
 		Serial.println("  No CSF (null)");
 	} else if (ivt[6] >= 0x60000000 && ivt[6] <= 0x60FFFFFF) {
-		Serial.println("  TODO: parse and print CSF - is format documented anywhere?");
+		Serial.println("  TODO: parse and print CSF");
 	} else {
 		Serial.println("  ERROR: CSF not an address in flash memory!");
 	}
@@ -121,6 +130,7 @@ void loop()
 }
 
 
+
 const char *status_name(uint8_t status)
 {
 	if (status == HAB_FAILURE) return "Failure";
@@ -171,4 +181,31 @@ const char *context_name(uint8_t context)
 	if (context == HAB_CTX_ASSERT) return "hab_rvt.assert()";
 	if (context == HAB_CTX_EXIT) return "hab_rvt.exit()";
 	return "unknown context";
+}
+
+void print_lock_state(const char *name, const char *state)
+{
+	Serial.print("  ");
+	Serial.print(name);
+	Serial.print(" is ");
+	Serial.println(state);
+}
+
+void print_lock_2way(const char *name, uint32_t bits)
+{
+	if ((bits & 1) == 0) {
+		print_lock_state(name, "unlocked");
+	} else {
+		print_lock_state(name, "locked");
+	}
+}
+
+void print_lock_3way(const char *name, uint32_t bits)
+{
+	if ((bits & 3) == 0) {
+		print_lock_state(name, "unlocked");
+	} else {
+		if (bits & 1) print_lock_state(name, "write locked");
+		if (bits & 2) print_lock_state(name, "operation locked");
+	}
 }
