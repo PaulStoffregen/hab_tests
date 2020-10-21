@@ -13,6 +13,9 @@
 #include "hab_defines.h"
 #define hab_rvt (*(hab_rvt_t *)0x00200300)
 
+// Reserve the HAB memory, so USB buffers don't overwrite logged HAB events
+__attribute__ ((section(".hab_log"), used)) volatile uint8_t HAB_logfile[8192];
+
 const char *status_name(uint8_t status);
 const char *reason_name(uint8_t reason);
 const char *context_name(uint8_t context);
@@ -76,6 +79,7 @@ void setup()
 
 	Serial.println();
 	Serial.printf("HAB Version: %08X\n", hab_rvt.get_version());
+	Serial.printf("HAB Memory: %d bytes at %08X\n", sizeof(HAB_logfile), (int)HAB_logfile);
 	Serial.println();
 
 	hab_config_t config;
@@ -83,11 +87,11 @@ void setup()
 	hab_status_t status;
 	status = hab_rvt.report_status(&config, &state);
 	if (status == HAB_SUCCESS) {
-		Serial.println("no warning or failure audit events have been logged");
+		Serial.println("Success!  No warning or failure audit events were logged");
 	} else if (status == HAB_WARNING) {
-		Serial.println("warning events have been logged");
+		Serial.println("Warning events have been logged");
 	} else if (status == HAB_FAILURE ) {
-		Serial.println("failure event");
+		Serial.println("Failure!");
 	} else {
 		Serial.println("unknown report status");
 	}
