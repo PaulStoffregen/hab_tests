@@ -69,9 +69,9 @@ int main(int argc, char **argv)
 			cfs_address);
 	}
 
-	addr = 0x1000;
+	addr = 0x1400;
 	while (!memory_is_undefined(addr)) addr++;
-	printf("Data from %X to %X\n", 0x1000, addr);
+	printf("Data from %X to %X\n", 0x1400, addr);
 
 	len = cfs_address - 0x60000000;
 
@@ -97,8 +97,8 @@ int main(int argc, char **argv)
 	fprintf(fp, "\tSignature Format = CMS\n");
 	fprintf(fp, "\n[Authenticate Data]\n");
 	fprintf(fp, "\tVerification Index = 0\n");
-	fprintf(fp, "\tBlocks = 0x60001000 0x00001000 0x%08X \"%s\"\n",
-		cfs_address - 0x60001000, binname);
+	fprintf(fp, "\tBlocks = 0x60001400 0x00001400 0x%08X \"%s\"\n",
+		cfs_address - 0x60001400, binname);
 	fprintf(fp, "\n");
 	fclose(fp);
 

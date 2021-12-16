@@ -33,9 +33,14 @@ void setup()
 	Serial.println("-------------------------------------------------");
 	Serial.println();
 	Serial.printf("Unique ID: %08X %08X\n", HW_OCOTP_CFG0, HW_OCOTP_CFG1);
-	Serial.printf("SRK Hash:  %08X %08X %08X %08X %08X %08X %08X %08X\n",
-		HW_OCOTP_SRK0, HW_OCOTP_SRK1, HW_OCOTP_SRK2, HW_OCOTP_SRK3,
-		HW_OCOTP_SRK4, HW_OCOTP_SRK5, HW_OCOTP_SRK6, HW_OCOTP_SRK7);
+	Serial.printf("Public Key Hash:  %08X %08X %08X %08X %08X %08X %08X %08X\n",
+		HW_OCOTP_0x580, HW_OCOTP_0x590, HW_OCOTP_0x5A0, HW_OCOTP_0x5B0,
+		HW_OCOTP_0x5C0, HW_OCOTP_0x5D0, HW_OCOTP_0x5E0, HW_OCOTP_0x5F0);
+	Serial.printf("AES128 Key:   %08X %08X %08X %08X\n",
+		HW_OCOTP_0x690, HW_OCOTP_0x6A0, HW_OCOTP_0x6B0, HW_OCOTP_0x6C0);
+	if (HW_OCOTP_CTRL & HW_OCOTP_CTRL_ERROR) {
+		HW_OCOTP_CTRL_CLR = HW_OCOTP_CTRL_ERROR;
+	}
 	const uint32_t lockbits = HW_OCOTP_LOCK;
 	Serial.printf("Fuse Lock: %08X\n", lockbits);
 	print_lock_3way("Boot Config", lockbits >> 2);
@@ -44,7 +49,16 @@ void setup()
 	print_lock_3way("GP1", lockbits >> 10);
 	print_lock_3way("GP2", lockbits >> 12);
 	print_lock_3way("GP3", lockbits >> 26);
-	print_lock_2way("SW_GP1", lockbits >> 24);
+	print_lock_2way("SW_GP1", lockbits >> 16);
+	print_lock_2way("SW_GP2 write", lockbits >> 21);
+	print_lock_2way("SW_GP2 read", lockbits >> 23);
+	const uint32_t secure = HW_OCOTP_CFG5;
+	Serial.printf("Config: %08X\n", secure);
+	print_lock_2way("Security", secure >> 1);
+	print_key_4way("Region 0 key", secure >> 12);
+	print_key_4way("Region 1 key", secure >> 14);
+
+
 	const uint32_t *ivt = (uint32_t *)0x60001000;
 	Serial.println("Image Vector Table: (ref manual rev 2: 9.7.1.1, page 261)");
 	Serial.printf("  Header   %08X\n  Vector   %08X\n  reserved %08X\n  DCD      %08X\n",
@@ -212,4 +226,19 @@ void print_lock_3way(const char *name, uint32_t bits)
 		if (bits & 1) print_lock_state(name, "write locked");
 		if (bits & 2) print_lock_state(name, "operation locked");
 	}
+}
+
+void print_key_4way(const char *name, uint32_t bits)
+{
+	const char *s;
+	switch (bits & 3) {
+	  case 0: s = "registers"; break;
+	  case 1: s = "GP4"; break;
+	  case 2: s = "SNVS master"; break;
+	  case 3: s = "SW GP2"; break;
+	}
+	Serial.print("  ");
+	Serial.print(name);
+	Serial.print(": ");
+	Serial.println(s);
 }
