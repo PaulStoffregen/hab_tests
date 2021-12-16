@@ -1,6 +1,23 @@
-# Testing HAB on Teensy 4.0
+# Code Security on Teensy 4.x
 
-High Assurange Boot (HAB) is not yet supported on Teensy 4.x.  This repository
+Teensy 4.x officially supports code security.  Official documentation is here:
+
+https://www.pjrc.com/teensy/td_code_security.html
+
+To use code security, in Arduino with Teensyduino 1.55 or later, click
+**Tools > Teensy 4 Security**.
+
+![](https://www.pjrc.com/teensy/code_security_t4security.png)
+
+
+# Old & Obsolete HAB Experiments
+
+This repository is old experiments from the time before code security became
+officially supported on Lockable Teensy.
+
+## Testing HAB on Teensy 4.0
+
+~~High Assurange Boot (HAB) is not yet supported on Teensy 4.x.~~  This repository
 is a collection of experiments to hopefully get it working.  Discussion is on
 this forum thread.
 
