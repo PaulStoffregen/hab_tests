@@ -20,6 +20,7 @@ ifeq ($(PLATFORM), IMXRT)
   ASFLAGS   ?= -std=gnu99 -mthumb -Wall
   CPPFLAGS  ?= -mthumb
   LFLAGS    ?= -nostartfiles --static -nostdlib -T$(LINK_SCRIPT)
+  HEXFLAGS  ?= -O ihex
 
   #DEFINES   += -DBSP_BOARD_TYPE=BSP_BRD_MIMXRT1060_EVK
   #DEFINES   += -DBSP_SOC_TYPE=BSP_SOC_IMXRT

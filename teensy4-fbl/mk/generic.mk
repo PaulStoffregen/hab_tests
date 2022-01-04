@@ -738,7 +738,7 @@ $(EXE_DIR)/$(EXE_TARGET): $(OBJDIRS) $(EXEDIRS) $(CMN_OBJS) $(EXE_OBJS) $(LINK_S
 
 $(HEX_DIR)/%.$(HEX_EXT): $(EXE_DIR)/$(EXE_TARGET)
 	@ echo "... creating $@"
-	$(QUIET) $(OCP) -O ihex $< $@
+	$(QUIET) $(OCP) $(HEXFLAGS) $< $@
 
 $(BIN_DIR)/%$(addprefix .,$(BIN_EXT)): $(EXE_DIR)/$(EXE_TARGET)
 	@ echo "... creating $@"
